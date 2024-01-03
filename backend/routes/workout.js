@@ -4,15 +4,10 @@ const workoutController = require('../controller/workoutController')
 const router = express.Router();
 
 //get all workouts
-router.get("/", (req, res) => {
-  res.send("get all workouts");
-});
+router.get("/", workoutController.getAllWorkouts);
 
 //get a single workout
-router.get("/:id", (req, res) => {
-  const paramsid = req.params.id;
-  res.send(`get a ${paramsid} workouts`);
-});
+router.get("/:id", workoutController.getSingleWorkout);
 
 //post a workout
 router.post("/", workoutController.createWorkout);
