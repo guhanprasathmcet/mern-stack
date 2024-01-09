@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useWorkoutHook } from "../hooks/useWorkoutHook";
 
 const WorkoutForm = () => {
   const initialExcersiedetails = {
@@ -8,10 +9,10 @@ const WorkoutForm = () => {
   };
 
   const [workoutdetails, setworkoutdetails] = useState(initialExcersiedetails);
+  const {dispatch} = useWorkoutHook();
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
 
     const title = workoutdetails.title;
     const load = workoutdetails.load;
@@ -32,6 +33,7 @@ const WorkoutForm = () => {
       setError(json.error);
     }
     if (response.ok) {
+      dispatch({type:'CREATE_WORKOUT',payload:workout})
       setworkoutdetails(initialExcersiedetails);
       setError(null);
       console.log('new workout added', json);
@@ -51,6 +53,7 @@ const WorkoutForm = () => {
           }));
         }}
         value={workoutdetails.title}
+        required
       />
       <label>Load (in kg)</label>
       <input
@@ -62,6 +65,7 @@ const WorkoutForm = () => {
           }));
         }}
         value={workoutdetails.load}
+        required
       />
       <label>Reps</label>
       <input
@@ -73,6 +77,7 @@ const WorkoutForm = () => {
           }));
         }}
         value={workoutdetails.reps}
+        required
       />
       <button>Add Workout</button>
       {error && <div className="error">{error}</div>}

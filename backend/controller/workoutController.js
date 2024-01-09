@@ -41,19 +41,28 @@ const createWorkout = async (req, res) => {
 const deleteWorkout = async (req, res) => {
   const { id } = req.params;
 
-  //checking a valid id
+  // Checking a valid id
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    res.status(400).json({ error: "enter a valid id" });
+    return res.status(400).json({ error: "Enter a valid id" });
   }
 
-  const deleteworkout = await workoutModel.findOneAndDelete({ _id: id });
-  //checking that id is presentor not
-  if (!deleteworkout) {
-    res.status(404).json({ message: "not found!!!" });
-  }
+  try {
+    const deletedWorkout = await workoutModel.findOneAndDelete({ _id: id });
 
-  res.status(200).json({ deleteWorkout });
+    // Checking that id is present or not
+    if (!deletedWorkout) {
+      return res.status(404).json({ message: "Not found!!!" });
+    }
+
+    // Send a successful response
+    return res.status(200).json({ deletedWorkout });
+  } catch (error) {
+    // Handle any errors that occur during deletion
+    console.error("Error deleting workout:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
+
 
 //update a workout
 
