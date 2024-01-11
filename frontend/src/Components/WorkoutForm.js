@@ -86,3 +86,6 @@ const WorkoutForm = () => {
 };
 
 export default WorkoutForm;
+
+
+//this component is a workout form we used to add a new workout
